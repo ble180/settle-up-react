@@ -25,11 +25,13 @@ export const groupService = (
 
   addPaymentToGroup: (group: Group, payment: Payment) => {
     if (!isUserInGroup(group, payment.user)) {
-      Promise.reject(new InvalidGroupOperation(`Payment user isn't in group`));
+      return Promise.reject(
+        new InvalidGroupOperation(`Payment user isn't in group`)
+      );
     }
 
     if (!areUsersInGroup(group, payment.members)) {
-      Promise.reject(
+      return Promise.reject(
         new InvalidGroupOperation(`Some payment member isn't in group`)
       );
     }
@@ -42,11 +44,14 @@ export const groupService = (
     const quantityByUser = payment.quantity / payment.members.length;
     const newBalance = { ...group.balance };
     for (const user of payment.members) {
-      newBalance[user.id] -= quantityByUser;
+      const userBalance = newBalance[user.id] ?? 0;
+      newBalance[user.id] = userBalance - quantityByUser;
     }
 
     // adjust payment user balance
-    newBalance[payment.user.id] += payment.quantity;
+    const userBalance = newBalance[payment.user.id] ?? 0;
+    newBalance[payment.user.id] = userBalance + payment.quantity;
+    newGroup.balance = newBalance;
 
     return groupRepository.save(newGroup);
   },
@@ -59,6 +64,11 @@ export const groupService = (
     const newGroup = { ...group };
     newGroup.members = [...group.members, user];
 
+    newGroup.balance = {
+      ...group.balance,
+      [user.id]: 0
+    };
+
     return groupRepository.save(newGroup);
-  },
+  }
 });
