@@ -1,0 +1,11 @@
+.navbar {
+  height: 3.75rem;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  background-color: $background-darker;
+  @include shadow;
+}
