@@ -1,5 +1,5 @@
-import { Group } from '../../domain/models/Group';
-import { GroupRepository } from '../../domain/repositories/GroupRepository';
+import { Group } from '@/domain/models/Group';
+import { GroupRepository } from '@/domain/repositories/GroupRepository';
 
 const GROUP_ITEM_KEY = 'group';
 

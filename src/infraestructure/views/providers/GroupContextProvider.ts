@@ -1,7 +1,7 @@
-import { createContext } from 'react';
+import { Group } from '@/domain/models/Group';
 import { groupService } from '@/domain/services/GroupService';
 import { localStorageGroupRepository } from '@/infraestructure/repositories/LocalStorageGroupRepository';
-import { Group } from '@/domain/models/Group';
+import { createContext } from 'react';
 
 const _groupService = groupService(localStorageGroupRepository);
 

@@ -1,10 +1,10 @@
 import { Navbar } from '@/infraestructure/views/components/Navbar';
-import { router } from '@/infraestructure/views/router/index';
-import { RouterProvider } from 'react-router-dom';
 import {
   GroupContext,
   group
 } from '@/infraestructure/views/providers/GroupContextProvider';
+import { router } from '@/infraestructure/views/router/index';
+import { RouterProvider } from 'react-router-dom';
 
 function App() {
   return (
