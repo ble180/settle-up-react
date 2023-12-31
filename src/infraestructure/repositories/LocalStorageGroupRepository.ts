@@ -1,15 +1,21 @@
 import { Group } from '@/domain/models/Group';
+import { Payment } from '@/domain/models/Payment';
 import { GroupRepository } from '@/domain/repositories/GroupRepository';
 
 const GROUP_ITEM_KEY = 'group';
 
 export const localStorageGroupRepository: GroupRepository = {
   getGroup() {
-    const group = localStorage.getItem(GROUP_ITEM_KEY);
-    if (!group) {
+    const groupStr = localStorage.getItem(GROUP_ITEM_KEY);
+    if (!groupStr) {
       return Promise.reject();
     }
-    return Promise.resolve(JSON.parse(group));
+    const group = JSON.parse(groupStr);
+    group.payments.forEach((p: Payment) => {
+      p.operationDate = new Date(p.operationDate);
+    });
+
+    return Promise.resolve(group);
   },
 
   save(group) {
