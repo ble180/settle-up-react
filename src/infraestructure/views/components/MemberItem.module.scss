@@ -1,0 +1,23 @@
+.memberItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: white;
+  border-radius: $border-radius;
+
+  @include shadow;
+
+  &__balance {
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    &--negative {
+      color: $danger;
+    }
+
+    &--positive {
+      color: $success;
+    }
+  }
+}

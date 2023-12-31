@@ -1,5 +1,6 @@
 import { GroupInfo } from '@/infraestructure/views/components/GroupInfo';
 import { PaymentList } from '@/infraestructure/views/components/PaymentList';
+import { MemberList } from '../components/MemberList';
 import styles from './Home.module.scss';
 
 export function Home() {
@@ -12,6 +13,7 @@ export function Home() {
       </div>
       <div className={styles.home__content}>
         <PaymentList />
+        <MemberList />
       </div>
     </div>
   );
