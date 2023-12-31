@@ -1,11 +1,11 @@
 import { Payment } from '@/domain/models/Payment';
 import { PaymentItem } from '@/infraestructure/views/components/PaymentItem';
-import { GroupContext } from '@/infraestructure/views/providers/GroupContextProvider';
 import { useContext, useState } from 'react';
+import { DIContext } from '../providers/DIProvider';
 import style from './PaymentList.module.scss';
 
 export function PaymentList() {
-  const group = useContext(GroupContext);
+  const { group } = useContext(DIContext);
 
   const [payments] = useState<Payment[]>(group.payments);
 
