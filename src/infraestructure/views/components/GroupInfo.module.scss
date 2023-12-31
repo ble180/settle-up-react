@@ -1,0 +1,28 @@
+.groupInfo {
+  display: flex;
+  height: 100%;
+  gap: 1rem;
+
+  &__balanceContainer {
+    flex: 1;
+  }
+
+  &__titleContainer {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: white;
+  }
+
+  &__title {
+    font-weight: 400;
+    font-size: 2.5rem;
+  }
+
+  &__info {
+    font-weight: 300;
+  }
+}
