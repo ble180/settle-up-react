@@ -25,7 +25,7 @@ export function addPayment(groupRepository: GroupRepository) {
 
     // add payment to group
     const newGroup = { ...group };
-    newGroup.payments = [...group.payments, payment];
+    newGroup.payments = [payment, ...group.payments];
 
     // adjust group balance
     const quantityByUser = payment.quantity / payment.members.length;

@@ -8,7 +8,7 @@ import {
   SelectOption
 } from '@/infraestructure/views/components/common/Select';
 import { DIContext } from '@/infraestructure/views/providers/DIProvider';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './CreatePayment.module.scss';
 
@@ -22,29 +22,45 @@ export function CreatePayment() {
   const { getGroup, addPayment } = useContext(DIContext);
   const navigate = useNavigate();
 
+  const [paymentUsersOptions, setPaymentUsersOptions] = useState<
+    SelectOption[]
+  >([]);
   const [members, setMembers] = useState<PaymentMember[]>([]);
-  const [users, setUsers] = useState<SelectOption[]>([]);
   const [concept, setConcept] = useState('');
-  const [conceptError, setConceptError] = useState('');
+  const [paymenUser, setPaymentUser] = useState<User>();
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     (async () => {
       const group = await getGroup();
-      setUsers(group.members.map((m) => ({ value: m.id, label: m.name })));
+      setPaymentUsersOptions(
+        group.members.map((m) => ({ value: m.id, label: m.name }))
+      );
       setMembers(
         group.members.map((m) => ({ user: m, added: false, amount: '0,00 €' }))
       );
+      setPaymentUser(group.members[0]);
     })();
   }, [getGroup]);
+
+  const validForm = useMemo(() => {
+    const addedMembers = members.filter((m) => m.added).length;
+    return (
+      concept != '' && amount > 0 && paymenUser != null && addedMembers > 0
+    );
+  }, [concept, amount, members, paymenUser]);
 
   function handleAmountChange(event: React.ChangeEvent<HTMLInputElement>) {
     setAmount(Number(event.target.value));
   }
 
   function handleConceptChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setConceptError('');
     setConcept(event.target.value);
+  }
+
+  function handlePaymentUserChange(option: SelectOption) {
+    const user = members.find((m) => m.user.id === option.value)?.user;
+    setPaymentUser(user);
   }
 
   function handleToggleAdded(id: string) {
@@ -69,28 +85,12 @@ export function CreatePayment() {
   }
 
   async function createPayment() {
-    if (!concept) {
-      setConceptError('El concepto es obligatorio');
-      return;
-    }
-
-    if (amount == 0) {
-      return;
-    }
-
-    // TODO Validations
-    const totalAddedMembers = members.filter((m) => m.added).length;
-    if (totalAddedMembers == 0) {
-      return;
-    }
-
-    // TODO
     const payment: Payment = {
       name: concept,
       operationDate: new Date(),
       quantity: amount,
-      members: members.map((m) => m.user),
-      user: members[0].user
+      members: members.filter((m) => m.added).map((m) => m.user),
+      user: paymenUser as User
     };
 
     await addPayment(payment);
@@ -112,9 +112,12 @@ export function CreatePayment() {
             required
             value={concept}
             onChange={handleConceptChange}
-            error={conceptError}
           />
-          <Select label="Quién pago" options={users} />
+          <Select
+            label="Quién pago"
+            options={paymentUsersOptions}
+            onChange={handlePaymentUserChange}
+          />
           <div className={styles.createPayment__amount}>
             <input
               className={styles.createPayment__amountInput}
@@ -144,7 +147,7 @@ export function CreatePayment() {
             </div>
           ))}
         </div>
-        <Button label="Guardar" onClick={createPayment} />
+        <Button label="Guardar" onClick={createPayment} disabled={!validForm} />
       </div>
     </div>
   );

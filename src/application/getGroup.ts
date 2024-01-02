@@ -10,6 +10,10 @@ export function getGroup(groupRespository: GroupRepository) {
       await groupRespository.save(group);
     }
 
+    group.payments.sort(
+      (p1, p2) => p2.operationDate.getTime() - p1.operationDate.getTime()
+    );
+
     return Promise.resolve(group);
   };
 }

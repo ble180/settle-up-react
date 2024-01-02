@@ -7,6 +7,17 @@
   cursor: pointer;
   @include shadow;
 
+  &:disabled,
+  &[disabled] {
+    color: $text-color;
+    background-color: #cccccc;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: #cccccc;
+    }
+  }
+
   &:hover {
     background: darken($secondary, $amount: 2%);
   }
