@@ -1,0 +1,35 @@
+.select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+
+  &__select {
+    appearance: none;
+    border: none;
+    outline: none;
+    font: inherit;
+
+    border-bottom: 1px solid $border-color;
+    background: $background;
+    padding: 0 1rem;
+    height: 30px;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-bottom: 2px solid $secondary;
+    }
+  }
+
+  &::after {
+    content: '\25BC';
+    position: absolute;
+    color: $border-color;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 0.8rem;
+    transition: 0.25s all ease;
+    pointer-events: none;
+  }
+}
