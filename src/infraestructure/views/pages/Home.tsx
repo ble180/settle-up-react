@@ -2,6 +2,7 @@ import { GroupInfo } from '@/infraestructure/views/components/GroupInfo';
 import { MemberList } from '@/infraestructure/views/components/MemberList';
 import { PaymentList } from '@/infraestructure/views/components/PaymentList';
 import { Link } from 'react-router-dom';
+import { TransactionList } from '../components/TransactionList';
 import styles from './Home.module.scss';
 
 export function Home() {
@@ -15,6 +16,7 @@ export function Home() {
       <div className={styles.home__content}>
         <PaymentList />
         <MemberList />
+        <TransactionList />
       </div>
       <div className={styles.home__actionBtns}>
         <Link className={styles.home__actionBtn} to={'/create-payment'}>
