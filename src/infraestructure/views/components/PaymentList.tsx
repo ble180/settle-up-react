@@ -20,7 +20,7 @@ export function PaymentList() {
       <p>No hay gastos</p>
     ) : (
       payments.map((payment) => (
-        <PaymentItem key={payment.name} payment={payment} />
+        <PaymentItem key={payment.id} payment={payment} />
       ))
     );
 

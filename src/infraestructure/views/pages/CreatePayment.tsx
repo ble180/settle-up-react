@@ -10,6 +10,7 @@ import {
 import { DIContext } from '@/infraestructure/views/providers/DIProvider';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './CreatePayment.module.scss';
 
 type PaymentMember = {
@@ -86,6 +87,7 @@ export function CreatePayment() {
 
   async function createPayment() {
     const payment: Payment = {
+      id: uuidv4(),
       name: concept,
       operationDate: new Date(),
       quantity: amount,

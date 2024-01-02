@@ -1,6 +1,7 @@
 import { User } from './User';
 
 export type Payment = {
+  id: string;
   name: string;
   quantity: number;
   operationDate: Date;
