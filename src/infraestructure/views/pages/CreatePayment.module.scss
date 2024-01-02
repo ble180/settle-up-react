@@ -1,0 +1,83 @@
+.createPayment {
+  height: 100%;
+  overflow: auto;
+
+  &__container {
+    @include main-container(30rem);
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: auto;
+  }
+
+  &__subtitle {
+    font-weight: 300;
+  }
+
+  &__whoPayContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    @include card;
+  }
+
+  &__amount {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__amountInput {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 5rem;
+    font-weight: bold;
+    color: $primary;
+    width: 100%;
+    text-align: right;
+
+    appearance: textfield;
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  &__amountCurrency {
+    font-size: 5rem;
+    color: $primary;
+  }
+
+  &__member {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__memberInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__memberName {
+    font-size: 1.2rem;
+  }
+
+  &__memberAmount {
+    font-weight: 300;
+  }
+
+  &__forWhoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    @include card;
+  }
+}

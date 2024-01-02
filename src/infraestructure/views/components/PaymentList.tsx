@@ -15,12 +15,19 @@ export function PaymentList() {
     })();
   }, [getGroup]);
 
+  const content =
+    payments.length === 0 ? (
+      <p>No hay gastos</p>
+    ) : (
+      payments.map((payment) => (
+        <PaymentItem key={payment.name} payment={payment} />
+      ))
+    );
+
   return (
     <div className={style.paymentList}>
       <span className={style.paymentList__title}>Gastos</span>
-      {payments.map((payment) => (
-        <PaymentItem key={payment.name} payment={payment} />
-      ))}
+      {content}
     </div>
   );
 }

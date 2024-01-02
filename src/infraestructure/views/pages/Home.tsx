@@ -17,7 +17,7 @@ export function Home() {
         <MemberList />
       </div>
       <div className={styles.home__actionBtns}>
-        <Link className={styles.home__actionBtn} to={'/'}>
+        <Link className={styles.home__actionBtn} to={'/create-payment'}>
           Añadir gasto
         </Link>
         <Link className={styles.home__actionBtn} to={'/create-user'}>

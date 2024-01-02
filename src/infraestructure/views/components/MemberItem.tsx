@@ -1,3 +1,4 @@
+import { formatQuantity } from '@/domain/models/Payment';
 import { User } from '@/domain/models/User';
 import styles from './MemberItem.module.scss';
 
@@ -17,7 +18,7 @@ export function MemberItem({
     <div className={styles.memberItem}>
       <span className={styles.memberItem__name}>{member.name}</span>
       <span className={`${styles.memberItem__balance} ${balanceClassName}`}>
-        {balance} €
+        {formatQuantity(balance)}
       </span>
     </div>
   );

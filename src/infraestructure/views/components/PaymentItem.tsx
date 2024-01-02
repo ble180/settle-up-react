@@ -1,4 +1,4 @@
-import { Payment } from '@/domain/models/Payment';
+import { Payment, formatQuantity } from '@/domain/models/Payment';
 import styles from './PaymentItem.module.scss';
 
 export function PaymentItem({ payment }: { payment: Payment }) {
@@ -12,7 +12,7 @@ export function PaymentItem({ payment }: { payment: Payment }) {
         className={`${styles.paymentItem__column} ${styles['paymentItem__column--right']}`}
       >
         <span className={styles.paymentItem__quantity}>
-          {payment.quantity} €
+          {formatQuantity(payment.quantity)}
         </span>
         <span className={styles.paymentItem__date}>
           {formatDate(payment.operationDate)}

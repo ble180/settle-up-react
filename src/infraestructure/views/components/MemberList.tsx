@@ -15,18 +15,23 @@ export function MemberList() {
     })();
   }, [getGroup]);
 
+  const content =
+    group?.members.length === 0 ? (
+      <p>No hay miembros</p>
+    ) : (
+      group?.members.map((member) => (
+        <MemberItem
+          key={member.name}
+          member={member}
+          balance={group.balance[member.id]}
+        />
+      ))
+    );
+
   return (
-    group && (
-      <div className={styles.memberList}>
-        <span className={styles.memberList__title}>Miembros</span>
-        {group.members.map((member) => (
-          <MemberItem
-            key={member.name}
-            member={member}
-            balance={group.balance[member.id]}
-          />
-        ))}
-      </div>
-    )
+    <div className={styles.memberList}>
+      <span className={styles.memberList__title}>Miembros</span>
+      {content}
+    </div>
   );
 }
