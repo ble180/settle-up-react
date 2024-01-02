@@ -1,7 +1,7 @@
 .home {
   &__info {
     height: 15rem;
-    background-color: #4caf50;
+    background-color: $secondary;
   }
 
   &__infoContent {
@@ -19,5 +19,42 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  &__actionBtns {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 999;
+
+    display: inline-flex;
+    align-items: center;
+    @include shadow;
+  }
+
+  &__actionBtn {
+    outline: none;
+    border: none;
+    padding: 0.8rem;
+    width: 10rem;
+
+    background-color: $secondary;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba($secondary, 0.8);
+    }
+
+    &:nth-child(1) {
+      border-radius: $border-radius 0 0 $border-radius;
+    }
+
+    &:nth-child(2) {
+      border-radius: 0 $border-radius $border-radius 0;
+    }
   }
 }

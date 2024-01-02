@@ -1,6 +1,7 @@
 import { GroupInfo } from '@/infraestructure/views/components/GroupInfo';
+import { MemberList } from '@/infraestructure/views/components/MemberList';
 import { PaymentList } from '@/infraestructure/views/components/PaymentList';
-import { MemberList } from '../components/MemberList';
+import { Link } from 'react-router-dom';
 import styles from './Home.module.scss';
 
 export function Home() {
@@ -14,6 +15,14 @@ export function Home() {
       <div className={styles.home__content}>
         <PaymentList />
         <MemberList />
+      </div>
+      <div className={styles.home__actionBtns}>
+        <Link className={styles.home__actionBtn} to={'/'}>
+          Añadir gasto
+        </Link>
+        <Link className={styles.home__actionBtn} to={'/create-user'}>
+          Añadir miembro
+        </Link>
       </div>
     </div>
   );
