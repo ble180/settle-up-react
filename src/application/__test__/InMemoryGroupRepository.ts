@@ -1,8 +1,8 @@
-import { GroupRepository } from '../../repositories/GroupRepository';
-import { Group } from '../../models/Group';
+import { Group } from '@/domain/models/Group';
+import { GroupRepository } from '@/domain/repositories/GroupRepository';
 
 export const inMemoryGroupRepository = (
-  defaultGroup: Group
+  defaultGroup?: Group
 ): GroupRepository => {
   let group = defaultGroup;
 

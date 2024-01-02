@@ -1,70 +1,24 @@
+import { Group } from '@/domain/models/Group';
+import { Payment } from '@/domain/models/Payment';
+import { User } from '@/domain/models/User';
 import { describe, expect, test } from 'vitest';
-import { groupService } from '../GroupService';
+import { addPayment } from '../addPayment';
 import { inMemoryGroupRepository } from './InMemoryGroupRepository';
-import { Group } from '../../models/Group';
-import { User } from '../../models/User';
-import { Payment } from '../../models/Payment';
 
-describe('GroupService', () => {
-  test('getGroup', async () => {
-    const service = groupService(inMemoryGroupRepository(createGroup()));
-
-    const group = await service.getGroup();
-    expect(group.name).toBe('Test');
-  });
-
-  test('addMemberToGroup with empty group', async () => {
-    let group = createGroup();
-    const user = createUser();
-
-    const service = groupService(inMemoryGroupRepository(group));
-    group = await service.addMemberToGroup(group, user);
-    expect(group.members).toContain(user);
-    expect(group.balance[user.id]).toBe(0);
-  });
-
-  test('addMemberToGroup with existing members', async () => {
-    let group = createGroupWithUsers();
-    const user = createUser({ id: '3', name: 'Pedro' });
-
-    const service = groupService(inMemoryGroupRepository(group));
-    group = await service.addMemberToGroup(group, user);
-    expect(group.members).toContain(user);
-    expect(group.balance[user.id]).toBe(0);
-  });
-
-  test('addMemberToGroup with existing payments', async () => {
-    let group = createGroupWithUsers();
-    const service = groupService(inMemoryGroupRepository(group));
-
-    group = await service.addPaymentToGroup(
-      group,
-      createPayment({
-        user: group.members[0],
-        members: group.members,
-        quantity: 10
-      })
-    );
-
-    const user = createUser({ id: '3', name: 'Pedro' });
-    group = await service.addMemberToGroup(group, user);
-    expect(group.members).toContain(user);
-    expect(group.balance[user.id]).toBe(0);
-  });
-
+describe('addPayment', () => {
   test('addPaymentToGroup to all members', async () => {
     let group = createGroupWithUsers();
     const juan = group.members[0];
     const luis = group.members[1];
+    const repository = inMemoryGroupRepository(group);
 
-    const service = groupService(inMemoryGroupRepository(group));
     const payment = createPayment({
       user: juan,
       members: [juan, luis],
       quantity: 10
     });
 
-    group = await service.addPaymentToGroup(group, payment);
+    group = await addPayment(repository)(payment);
     expect(group.payments).toContain(payment);
     expect(group.balance[juan.id]).toBe(5);
     expect(group.balance[luis.id]).toBe(-5);
@@ -74,15 +28,15 @@ describe('GroupService', () => {
     let group = createGroupWithUsers();
     const juan = group.members[0];
     const luis = group.members[1];
+    const repository = inMemoryGroupRepository(group);
 
-    const service = groupService(inMemoryGroupRepository(group));
     const payment = createPayment({
       user: juan,
       members: [luis],
       quantity: 10
     });
 
-    group = await service.addPaymentToGroup(group, payment);
+    group = await addPayment(repository)(payment);
     expect(group.payments).toContain(payment);
     expect(group.balance[juan.id]).toBe(10);
     expect(group.balance[luis.id]).toBe(-10);
@@ -92,23 +46,69 @@ describe('GroupService', () => {
     let group = createGroupWithUsers();
     const juan = group.members[0];
     const luis = group.members[1];
+    const repository = inMemoryGroupRepository(group);
 
-    const service = groupService(inMemoryGroupRepository(group));
     const payment = createPayment({
       user: juan,
       members: [juan],
       quantity: 10
     });
 
-    group = await service.addPaymentToGroup(group, payment);
+    group = await addPayment(repository)(payment);
     expect(group.payments).toContain(payment);
     expect(group.balance[juan.id]).toBe(0);
     expect(group.balance[luis.id]).toBe(0);
   });
 
+  test('addPaymentToGroup add multiple payments', async () => {
+    let group = createGroupWithUsers();
+    const juan = group.members[0];
+    const luis = group.members[1];
+    const repository = inMemoryGroupRepository(group);
+
+    // juan: 5, luis: -5
+    await addPayment(repository)(
+      createPayment({
+        user: juan,
+        members: [juan, luis],
+        quantity: 10
+      })
+    );
+
+    // juan: -5, luis: 5
+    await addPayment(repository)(
+      createPayment({
+        user: luis,
+        members: [juan, luis],
+        quantity: 20
+      })
+    );
+
+    // juan: -10, luis: 10
+    await addPayment(repository)(
+      createPayment({
+        user: luis,
+        members: [juan],
+        quantity: 5
+      })
+    );
+
+    // juan: 40, luis: -40
+    group = await addPayment(repository)(
+      createPayment({
+        user: juan,
+        members: [luis],
+        quantity: 50
+      })
+    );
+
+    expect(group.balance[juan.id]).toBe(40);
+    expect(group.balance[luis.id]).toBe(-40);
+  });
+
   test('addPaymentToGroup to an unexisting member => invalid payment', async () => {
     const group = createGroupWithUsers();
-    const service = groupService(inMemoryGroupRepository(group));
+    const repository = inMemoryGroupRepository(group);
 
     const juan = group.members[0];
     const pedro = createUser({ id: '3', name: 'Pedro' });
@@ -119,14 +119,14 @@ describe('GroupService', () => {
       quantity: 10
     });
 
-    await expect(() =>
-      service.addPaymentToGroup(group, payment)
-    ).rejects.toThrowError(`Some payment member isn't in group`);
+    await expect(() => addPayment(repository)(payment)).rejects.toThrowError(
+      `Some payment member isn't in group`
+    );
   });
 
   test('addPaymentToGroup from unexisting member => invalid payment', async () => {
     const group = createGroupWithUsers();
-    const service = groupService(inMemoryGroupRepository(group));
+    const repository = inMemoryGroupRepository(group);
 
     const juan = group.members[0];
     const pedro = createUser({ id: '3', name: 'Pedro' });
@@ -137,20 +137,11 @@ describe('GroupService', () => {
       quantity: 10
     });
 
-    await expect(() =>
-      service.addPaymentToGroup(group, payment)
-    ).rejects.toThrowError(`Payment user isn't in group`);
+    await expect(() => addPayment(repository)(payment)).rejects.toThrowError(
+      `Payment user isn't in group`
+    );
   });
 });
-
-function createGroup(): Group {
-  return {
-    name: 'Test',
-    members: [],
-    payments: [],
-    balance: {}
-  };
-}
 
 function createGroupWithUsers(): Group {
   return {

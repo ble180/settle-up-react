@@ -6,6 +6,10 @@ export function createMember(groupRepository: GroupRepository) {
   return async function (user: User): Promise<Group> {
     const group = await groupRepository.getGroup();
 
+    if (!group) {
+      return Promise.reject(new Error("Group doesn't exist yet"));
+    }
+
     if (isUserInGroup(group, user)) {
       return Promise.resolve(group);
     }
