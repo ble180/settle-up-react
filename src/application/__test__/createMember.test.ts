@@ -1,6 +1,7 @@
 import { Group } from '@/domain/models/Group';
 import { Payment } from '@/domain/models/Payment';
 import { User } from '@/domain/models/User';
+import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, test } from 'vitest';
 import { addPayment } from '../addPayment';
 import { createMember } from '../createMember';
@@ -83,6 +84,7 @@ function createPayment(payment: {
 }): Payment {
   const { user, members, quantity } = payment;
   return {
+    id: uuidv4(),
     name: 'Cena',
     user,
     members,
