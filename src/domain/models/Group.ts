@@ -11,3 +11,7 @@ export type Group = {
 export type GroupBalance = {
   [userId: string]: number;
 };
+
+export function isUserInGroup(group: Group, user: User): boolean {
+  return group.members.some((member) => member.id === user.id);
+}
