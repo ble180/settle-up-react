@@ -1,4 +1,5 @@
 import { Group } from '@/domain/models/Group';
+import { User } from '@/domain/models/User';
 import { DIContext } from '@/infraestructure/views/providers/DIProvider';
 import { useContext, useEffect, useState } from 'react';
 import { MemberItem } from './MemberItem';
@@ -19,13 +20,13 @@ export function MemberList() {
     group?.members.length === 0 ? (
       <p>No hay miembros</p>
     ) : (
-      group?.members.map((member) => (
-        <MemberItem
-          key={member.name}
-          member={member}
-          balance={group.balance[member.id]}
-        />
-      ))
+      group &&
+      Object.entries(group.balance)
+        .sort((a, b) => a[1] - b[1])
+        .map(([id, balance]) => {
+          const member = group.members.find((m) => m.id === id) as User;
+          return <MemberItem key={id} member={member} balance={balance} />;
+        })
     );
 
   return (

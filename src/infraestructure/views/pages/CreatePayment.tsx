@@ -102,7 +102,7 @@ export function CreatePayment() {
   return (
     <div className={styles.createPayment}>
       <div className={styles.createPayment__container}>
-        <h2 className={styles.createPayment__title}>Nuevo pago</h2>
+        <h2 className={styles.createPayment__title}>Nuevo gasto</h2>
 
         <div className={styles.createPayment__whoPayContainer}>
           <h4 className={styles.createPayment__subtitle}>

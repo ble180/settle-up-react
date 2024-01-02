@@ -17,22 +17,13 @@ export function GroupInfo() {
   return (
     group && (
       <div className={style.groupInfo}>
-        <div className={style.groupInfo__balanceContainer}>
-          {Object.entries(group.balance).map(([key, value]) => (
-            <span key={key}>
-              {key}: {value}
-            </span>
-          ))}
-        </div>
-        <div className={style.groupInfo__titleContainer}>
-          <h2 className={style.groupInfo__title}>{group.name}</h2>
-          <span className={style.groupInfo__info}>
-            Transacciones: {group.payments.length}
-          </span>
-          <span className={style.groupInfo__info}>
-            Miembros: {group.members.length}
-          </span>
-        </div>
+        <h2 className={style.groupInfo__title}>{group.name}</h2>
+        <span className={style.groupInfo__info}>
+          Transacciones: {group.payments.length}
+        </span>
+        <span className={style.groupInfo__info}>
+          Miembros: {group.members.length}
+        </span>
       </div>
     )
   );

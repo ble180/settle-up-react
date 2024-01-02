@@ -1,21 +1,10 @@
 .groupInfo {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
   height: 100%;
-  gap: 1rem;
-
-  &__balanceContainer {
-    flex: 1;
-  }
-
-  &__titleContainer {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0.5rem;
-    color: white;
-  }
+  color: white;
 
   &__title {
     font-weight: 400;
