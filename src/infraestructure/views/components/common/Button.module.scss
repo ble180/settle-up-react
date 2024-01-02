@@ -1,0 +1,29 @@
+.button {
+  background: $secondary;
+  border: none;
+  border-radius: $border-radius;
+  padding: 0.5rem 1rem;
+  color: white;
+  cursor: pointer;
+  @include shadow;
+
+  &:hover {
+    background: darken($secondary, $amount: 2%);
+  }
+
+  &:active {
+    background: lighten($secondary, $amount: 2%);
+  }
+
+  &--primary {
+    background-color: $primary;
+
+    &:hover {
+      background: darken($primary, $amount: 2%);
+    }
+
+    &:active {
+      background: lighten($primary, $amount: 2%);
+    }
+  }
+}

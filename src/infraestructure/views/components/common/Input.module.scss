@@ -1,0 +1,33 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  &__label--required:after {
+    content: '*';
+    margin-left: 4px;
+    color: $danger;
+  }
+
+  &__input {
+    height: 30px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid $border-color;
+
+    &:hover {
+      border-color: darken($border-color, $amount: 80%);
+    }
+
+    &:focus {
+      border-width: 2px;
+      border-color: $secondary;
+    }
+  }
+
+  &__error {
+    color: $danger;
+    font-size: 0.8rem;
+  }
+}
