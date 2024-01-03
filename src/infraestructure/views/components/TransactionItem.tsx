@@ -18,7 +18,9 @@ export function TransactionItem({ transaction }: TransactionProps) {
         </span>
       </div>
       <span>&rarr;</span>
-      <span>{transaction.to.name}</span>
+      <span className={styles.transactionItem__toUser}>
+        {transaction.to.name}
+      </span>
     </div>
   );
 }
