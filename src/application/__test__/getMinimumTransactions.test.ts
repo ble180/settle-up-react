@@ -13,6 +13,8 @@ describe('getMinimumTransactions', () => {
     const repository = inMemoryGroupRepository(group);
 
     const transactions = await getMinimumTransactions(repository)();
+    transactions.forEach((t) => Object.assign(t, { id: undefined }));
+
     expect(transactions).toEqual([
       {
         from: group.members[1],
@@ -32,6 +34,8 @@ describe('getMinimumTransactions', () => {
     const repository = inMemoryGroupRepository(group);
 
     const transactions = await getMinimumTransactions(repository)();
+    transactions.forEach((t) => Object.assign(t, { id: undefined }));
+
     expect(transactions).toEqual([
       {
         from: group.members[0],
@@ -56,6 +60,8 @@ describe('getMinimumTransactions', () => {
     const repository = inMemoryGroupRepository(group);
 
     const transactions = await getMinimumTransactions(repository)();
+    transactions.forEach((t) => Object.assign(t, { id: undefined }));
+
     expect(transactions).toEqual([
       {
         from: group.members[0],
@@ -66,6 +72,37 @@ describe('getMinimumTransactions', () => {
         from: group.members[0],
         to: group.members[2],
         quantity: 5.5
+      }
+    ]);
+  });
+
+  test('transactions with decimals', async () => {
+    const group = createGroup({
+      '1': -5.33,
+      '2': -5.33,
+      '3': -5.33,
+      '4': 16
+    });
+    const repository = inMemoryGroupRepository(group);
+
+    const transactions = await getMinimumTransactions(repository)();
+    transactions.forEach((t) => Object.assign(t, { id: undefined }));
+
+    expect(transactions).toEqual([
+      {
+        from: group.members[0],
+        to: group.members[3],
+        quantity: 5.33
+      },
+      {
+        from: group.members[1],
+        to: group.members[3],
+        quantity: 5.33
+      },
+      {
+        from: group.members[2],
+        to: group.members[3],
+        quantity: 5.33
       }
     ]);
   });

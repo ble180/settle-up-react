@@ -51,7 +51,7 @@ function getTransactionsForUser(
   let positiveBalances = getPositiveBalances(balance);
 
   let restQuantity = quantity;
-  while (restQuantity < 0) {
+  while (restQuantity < 0 && positiveBalances.length > 0) {
     const [maxUserId, maxUserBalance] = positiveBalances[0];
     if (maxUserBalance > Math.abs(quantity)) {
       balance[maxUserId] += quantity;

@@ -4,6 +4,7 @@ import { User } from '@/domain/models/User';
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, test } from 'vitest';
 import { addPayment } from '../addPayment';
+import { createMember } from '../createMember';
 import { inMemoryGroupRepository } from './InMemoryGroupRepository';
 
 describe('addPayment', () => {
@@ -105,6 +106,28 @@ describe('addPayment', () => {
 
     expect(group.balance[juan.id]).toBe(40);
     expect(group.balance[luis.id]).toBe(-40);
+  });
+
+  test('addPaymentToGroup with decimals', async () => {
+    let group = createGroupWithUsers();
+    const juan = group.members[0];
+    const luis = group.members[1];
+    const pedro = createUser({ id: '3', name: 'Pedro' });
+    const repository = inMemoryGroupRepository(group);
+
+    group = await createMember(repository)(pedro);
+
+    group = await addPayment(repository)(
+      createPayment({
+        user: juan,
+        members: [juan, luis, pedro],
+        quantity: 10
+      })
+    );
+
+    expect(group.balance[juan.id]).toBe(6.67);
+    expect(group.balance[luis.id]).toBe(-3.33);
+    expect(group.balance[pedro.id]).toBe(-3.33);
   });
 
   test('addPaymentToGroup to an unexisting member => invalid payment', async () => {

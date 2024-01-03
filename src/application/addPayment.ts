@@ -28,18 +28,26 @@ export function addPayment(groupRepository: GroupRepository) {
     newGroup.payments = [payment, ...group.payments];
 
     // adjust group balance
-    const quantityByUser = payment.quantity / payment.members.length;
+    const quantityByUser = roundTwoDecimals(
+      payment.quantity / payment.members.length
+    );
     const newBalance = { ...group.balance };
     for (const user of payment.members) {
       const userBalance = newBalance[user.id] ?? 0;
-      newBalance[user.id] = userBalance - quantityByUser;
+      newBalance[user.id] = roundTwoDecimals(userBalance - quantityByUser);
     }
 
     // adjust payment user balance
     const userBalance = newBalance[payment.user.id] ?? 0;
-    newBalance[payment.user.id] = userBalance + payment.quantity;
+    newBalance[payment.user.id] = roundTwoDecimals(
+      userBalance + payment.quantity
+    );
     newGroup.balance = newBalance;
 
     return groupRepository.save(newGroup);
   };
+}
+
+function roundTwoDecimals(num: number) {
+  return +num.toFixed(2);
 }
