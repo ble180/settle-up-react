@@ -106,6 +106,49 @@ describe('getMinimumTransactions', () => {
       }
     ]);
   });
+
+  test('transactions complex', async () => {
+    const group = createGroup({
+      '1': -37,
+      '2': -17,
+      '3': -5,
+      '4': 8,
+      '5': 18,
+      '6': 33
+    });
+    const repository = inMemoryGroupRepository(group);
+
+    const transactions = await getMinimumTransactions(repository)();
+    transactions.forEach((t) => Object.assign(t, { id: undefined }));
+
+    expect(transactions).toEqual([
+      {
+        from: group.members[0],
+        to: group.members[5],
+        quantity: 33
+      },
+      {
+        from: group.members[0],
+        to: group.members[4],
+        quantity: 4
+      },
+      {
+        from: group.members[1],
+        to: group.members[4],
+        quantity: 14
+      },
+      {
+        from: group.members[1],
+        to: group.members[3],
+        quantity: 3
+      },
+      {
+        from: group.members[2],
+        to: group.members[3],
+        quantity: 5
+      }
+    ]);
+  });
 });
 
 function createGroup(balance: GroupBalance): Group {
@@ -115,7 +158,9 @@ function createGroup(balance: GroupBalance): Group {
       createUser({ id: '1', name: 'Juan' }),
       createUser({ id: '2', name: 'Luis' }),
       createUser({ id: '3', name: 'Pedro' }),
-      createUser({ id: '4', name: 'Abel' })
+      createUser({ id: '4', name: 'Abel' }),
+      createUser({ id: '5', name: 'Ana' }),
+      createUser({ id: '6', name: 'Iker' })
     ],
     payments: [],
     balance

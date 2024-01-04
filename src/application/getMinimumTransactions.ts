@@ -53,18 +53,19 @@ function getTransactionsForUser(
   let restQuantity = quantity;
   while (restQuantity < 0 && positiveBalances.length > 0) {
     const [maxUserId, maxUserBalance] = positiveBalances[0];
-    if (maxUserBalance > Math.abs(quantity)) {
-      balance[maxUserId] += quantity;
-      restQuantity = 0;
+    if (maxUserBalance > Math.abs(restQuantity)) {
+      balance[maxUserId] += restQuantity;
 
       transactions.push({
         from: userId,
         to: maxUserId,
-        quantity: Math.abs(quantity)
+        quantity: Math.abs(restQuantity)
       });
+
+      restQuantity = 0;
     } else {
-      balance[maxUserId] = 0;
       restQuantity = restQuantity + maxUserBalance;
+      balance[maxUserId] = 0;
 
       transactions.push({
         from: userId,
@@ -73,6 +74,7 @@ function getTransactionsForUser(
       });
     }
 
+    balance[userId] = restQuantity;
     positiveBalances = getPositiveBalances(balance);
   }
 
