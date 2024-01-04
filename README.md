@@ -18,5 +18,5 @@ docker build -t settle-up .
 Now you can run the container with the following command:
 
 ```
-docker run --name settle --rm settle-up
+docker run --name settle --rm -p 80:80 settle-up
 ```
