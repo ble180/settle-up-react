@@ -7,11 +7,11 @@ export function createMember(groupRepository: GroupRepository) {
     const group = await groupRepository.getGroup();
 
     if (!group) {
-      return Promise.reject(new Error("Group doesn't exist yet"));
+      throw new Error("Group doesn't exist yet");
     }
 
     if (isUserInGroup(group, user)) {
-      return Promise.resolve(group);
+      return group;
     }
 
     const newGroup = { ...group };
