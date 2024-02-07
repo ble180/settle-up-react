@@ -1,5 +1,5 @@
 {
-  "name": "autentia-settle-up",
+  "name": "@ble180/settle-up",
   "private": true,
   "version": "0.0.0",
   "type": "module",
