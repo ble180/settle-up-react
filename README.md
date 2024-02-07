@@ -1,10 +1,12 @@
-# Autentita Settle Up
+# Settle Up React
+
+This project is a "clone" of the known application [Settle Up](https://settleup.io) made in React for learning purposes. It's an application to share expenses between friends and family and split them in the minimal possible transactions.
 
 ## Getting started
 
 ```
-npm install
-npm run serve
+pnpm install
+pnpm serve
 ```
 
 ## Build a docker image
